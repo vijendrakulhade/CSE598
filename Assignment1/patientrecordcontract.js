@@ -43,6 +43,7 @@ class PatientRecordContract extends Contract {
      */
     async init(ctx) {
         console.log('Instantiated the patient record smart contract.');
+        this.patientRecordList = new PatientRecordList(ctx);
     }
 
     //  TASK-7: Implement the unknownTransaction to throw an error when
@@ -79,13 +80,18 @@ class PatientRecordContract extends Contract {
         let precord = PatientRecord.createInstance(username,name,dob,gender,blood_type);
         //TASK 0
         // Add patient record by calling the method in the PRecordList
-        throw new Error()
+        try{
+            this.patientRecordList.addPRecord(precord);
+        }catch(e){
+            throw new Error(e);
+        }
         return precord.toBuffer();
     }
 
     async getPatientByKey(ctx, username, name){
         let precordKey = PatientRecord.makeKey([username,name]);
         //TASK-1: Use a method from patientRecordList to read a record by key
+        let precord = this.patientRecordList.getPRecord(precordKey);
         return JSON.stringify(precord)
     }
 
@@ -97,13 +103,16 @@ class PatientRecordContract extends Contract {
      * @param {String} name name
      * @param {String} last_checkup_date date string 
      */
-    /*async updateCheckupDate(ctx,username,name,last_checkup_date){
+    async updateCheckupDate(ctx,username,name,last_checkup_date){
         let precordKey = PatientRecord.makeKey([username,name]);
         //TASK-3: Use a method from patientRecordList to read a record by key
+        let precord = this.patientRecordList.getPRecord(precordKey);
         //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
+        precord.setLastCheckupDate(last_checkup_date);
         //Use updatePRecord from patientRecordList to update the record on the ledger
+        PatientRecord.updatePRecord(precord);
        return precord.toBuffer();
-    }*/
+    }
 
 
 
