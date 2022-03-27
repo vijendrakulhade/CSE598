@@ -93,7 +93,7 @@ class PatientRecordContract extends Contract {
         console.log('create precordKey', precordKey);
         console.log('ctx',ctx);
         let precord = await ctx.patientRecordList.getPRecord(precordKey);
-        return precord
+        return PatientRecord
     }
 
 
@@ -182,7 +182,7 @@ class PatientRecordContract extends Contract {
             selector:{ gender : gender},
             use_index:["_design/genderIndexDoc"] 
         };
-        let result = await this.queryWithQueryString(ctx,queryString); 
+        let result = await this.queryWithQueryString(ctx, JSON.stringify(queryString)); 
         return result;
     }
 
@@ -202,7 +202,7 @@ class PatientRecordContract extends Contract {
         selector: { bloodType:blood_type },
         use_index:["_design/bloodTypeIndexDoc"] 
     };  
-    let res = await this.queryWithQueryString(ctx,queryString);
+    let res = await this.queryWithQueryString(ctx, JSON.stringify(queryString));
     return res;
     } 
 
@@ -220,7 +220,7 @@ class PatientRecordContract extends Contract {
     //      Pass the Query string built to queryWithQueryString
     let querySelector = {selector:{bloodType:[blood_type1,blood_type1]},
     use_index:["_design/bloodTypeIndexDoc"] };
-    return await this.queryWithQueryString(ctx,querySelector);
+    return await this.queryWithQueryString(ctx, JSON.stringify(querySelector));
     }
 
 }
