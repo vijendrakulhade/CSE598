@@ -40,3 +40,35 @@
 14. Once chaincode is committed, We can initialize ledger with below command.
 `peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" -C cse598 -n assignment1 --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" -c '{"function":"init","Args":[]}'`
 15. We can query chaincode using `peer chaincode query -C cse598 -n assignment1 -c '{"Args":["createPatientRecord","Sur008","Suresh","08-10-1974","Male","O+ve"]}'`
+
+ ### Upgrade Chaincode
+ 1. To upgrade chain code we need to create the repackage the chaincode.
+ `peer lifecycle chaincode package assignment_2.tar.gz --path ../../CSE598/Assignment1 --lang node --label assignment_2.0`
+ 2. Node we can install this package into Orgs, First we should set the env variables for Orgs
+ `export CORE_PEER_LOCALMSPID="Org2MSP"`
+`export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt`
+`export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt`
+`export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp`
+`export CORE_PEER_ADDRESS=localhost:9051`
+ `peer lifecycle chaincode install assignment_2.tar.gz`
+ 2. Now we can approve this new installed chaincode from Org2
+ `peer lifecycle chaincode queryinstalled` check package id from this comment.
+ We need to set variable for this new package id.
+ `export NEW_CC_PACKAGE_ID=basic_2.0:1d559f9fb3dd879601ee17047658c7e0c84eab732dca7c841102f20e42a9e7d4`
+ Than we are approving the new chaincode in Org2
+ `peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID cse598 --name assignment1 --version 2.0 --package-id $NEW_CC_PACKAGE_ID --sequence 2 --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem"`
+ 3. Same approval process we will be doing for Org1 as well.
+
+ 4. Now we can check the approval readiness with this command.
+ `peer lifecycle chaincode checkcommitreadiness --channelID cse598 --name assignment1 --version 2.0 --sequence 2 --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" --output json`
+.
+
+ 4. Now we can check the approval readiness with this command.
+ `peer lifecycle chaincode checkcommitreadiness --channelID cse598 --name assignment1 --version 2.0 --sequence 2 --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" --output json`
+ 5. Now we can commit the chaincode.
+ `peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID cse598 --name assignment1 --version 2.0 --sequence 2 --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt"`
+
+ ## Couchdb setup
+ 1. pull the docker image of couchdb `docker pull couchdb`
+ 2. Run couchbase docker container in admin mode
+ `docker run -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=password -d couchdb`
