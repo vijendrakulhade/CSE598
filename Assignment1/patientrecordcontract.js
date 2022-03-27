@@ -218,7 +218,8 @@ class PatientRecordContract extends Contract {
     //      and uses the index created for bloodType
     //      Construct the JSON couch DB selector queryString that uses two blood type indexe
     //      Pass the Query string built to queryWithQueryString
-    let querySelector = {selector:{bloodType:blood_type1}};
+    let querySelector = {selector:{bloodType:[blood_type1,blood_type1]},
+    use_index:["_design/bloodTypeIndexDoc"] };
     return await this.queryWithQueryString(ctx,querySelector);
     }
 
