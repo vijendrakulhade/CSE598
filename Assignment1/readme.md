@@ -72,3 +72,12 @@
  1. pull the docker image of couchdb `docker pull couchdb`
  2. Run couchbase docker container in admin mode
  `docker run -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=password -d couchdb`
+
+# Advanced Usage
+ ## Direct deploy chaincode 
+1.  `./network.sh deployCC -c cse598 -ccn assignment1 -ccp  ../../CSE598/Assignment1/ -ccl javascript`
+ After direct installation as well we need to set the variable to invoke the chaincode. 
+ After the variable getting this error while invoking 
+ `peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" -C cse598 -n assignment1 --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" -c '{"function":"init","Args":[]}'`
+ 
+ Error: error getting endorser client for invoke: endorser client failed to connect to localhost:7051: failed to create new connection: context deadline exceeded

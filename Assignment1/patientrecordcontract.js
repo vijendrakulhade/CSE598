@@ -43,7 +43,6 @@ class PatientRecordContract extends Contract {
      */
     async init(ctx) {
         console.log('Instantiated the patient record smart contract.');
-        ctx.prc = this.createContext();
     }
 
     //  TASK-7: Implement the unknownTransaction to throw an error when
@@ -81,7 +80,7 @@ class PatientRecordContract extends Contract {
         //TASK 0
         // Add patient record by calling the method in the PRecordList
         try{
-            ctx.prc.patientRecordList.addPRecord(precord);
+            ctx.patientRecordList.addPRecord(precord);
         }catch(e){
             throw new Error(e);
         }
@@ -91,7 +90,7 @@ class PatientRecordContract extends Contract {
     async getPatientByKey(ctx, username, name){
         let precordKey = PatientRecord.makeKey([username,name]);
         //TASK-1: Use a method from patientRecordList to read a record by key
-        let precord = ctx.prc.patientRecordList.getPRecord(precordKey);
+        let precord = ctx.patientRecordList.getPRecord(precordKey);
         return JSON.stringify(precord)
     }
 
@@ -107,11 +106,11 @@ class PatientRecordContract extends Contract {
         let precordKey = PatientRecord.makeKey([username,name]);
         //TASK-3: Use a method from patientRecordList to read a record by key
 
-        let precord = await ctx.prc.patientRecordList.getPRecord(precordKey);
+        let precord = await ctx.patientRecordList.getPRecord(precordKey);
         //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
         precord.setLastCheckupDate(last_checkup_date);
         //Use updatePRecord from patientRecordList to update the record on the ledger
-        await ctx.prc.patientRecordList.updatePRecord(precord);
+        await ctx.patientRecordList.updatePRecord(precord);
 
        return precord.toBuffer();
     }
@@ -175,7 +174,8 @@ class PatientRecordContract extends Contract {
         //  TASK-4: Complete the query String JSON object to query using the genderIndex (META-INF folder)
         //  Construct the JSON couch DB selector queryString that uses genderIndex
         //  Pass the Query string built to queryWithQueryString
-
+        let result = await this.queryWithQueryString(ctx,gender); 
+        return result;
     }
 
     /**
@@ -190,6 +190,8 @@ class PatientRecordContract extends Contract {
     //      to query by bloodType
     //      Construct the JSON couch DB selector queryString that uses blood_typeIndex
     //      Pass the Query string built to queryWithQueryString 
+        let res = await this.queryWithQueryString(ctx,blood_type);
+        return res;
     } 
 
     /**
