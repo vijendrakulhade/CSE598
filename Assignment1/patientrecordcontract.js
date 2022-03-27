@@ -80,18 +80,20 @@ class PatientRecordContract extends Contract {
         //TASK 0
         // Add patient record by calling the method in the PRecordList
         try{
-            ctx.patientRecordList.addPRecord(precord);
+            await ctx.patientRecordList.addPRecord(precord);
         }catch(e){
             throw new Error(e);
         }
-        return precord.toBuffer();
+        return JSON.stringify(precord);
     }
 
     async getPatientByKey(ctx, username, name){
         let precordKey = PatientRecord.makeKey([username,name]);
         //TASK-1: Use a method from patientRecordList to read a record by key
-        let precord = ctx.patientRecordList.getPRecord(precordKey);
-        return JSON.stringify(precord)
+        console.log('create precordKey', precordKey);
+        console.log('ctx',ctx);
+        let precord = await ctx.patientRecordList.getPRecord(precordKey);
+        return precord
     }
 
 
@@ -112,7 +114,7 @@ class PatientRecordContract extends Contract {
         //Use updatePRecord from patientRecordList to update the record on the ledger
         await ctx.patientRecordList.updatePRecord(precord);
 
-       return precord.toBuffer();
+       return JSON.stringify(precord);
     }
 
 
@@ -174,7 +176,10 @@ class PatientRecordContract extends Contract {
         //  TASK-4: Complete the query String JSON object to query using the genderIndex (META-INF folder)
         //  Construct the JSON couch DB selector queryString that uses genderIndex
         //  Pass the Query string built to queryWithQueryString
-        let result = await this.queryWithQueryString(ctx,gender); 
+        let queryString  = {
+            selector:{ gender : gender} 
+        }
+        let result = await this.queryWithQueryString(ctx,queryString); 
         return result;
     }
 
@@ -189,9 +194,10 @@ class PatientRecordContract extends Contract {
     //      TASK-5: Write a new index for bloodType and write a CouchDB selector query that uses it
     //      to query by bloodType
     //      Construct the JSON couch DB selector queryString that uses blood_typeIndex
-    //      Pass the Query string built to queryWithQueryString 
-        let res = await this.queryWithQueryString(ctx,blood_type);
-        return res;
+    //      Pass the Query string built to queryWithQueryString
+    let queryString = {selector: {bloodType:blood_type}};  
+    let res = await this.queryWithQueryString(ctx,queryString);
+    return res;
     } 
 
     /**
@@ -206,6 +212,8 @@ class PatientRecordContract extends Contract {
     //      and uses the index created for bloodType
     //      Construct the JSON couch DB selector queryString that uses two blood type indexe
     //      Pass the Query string built to queryWithQueryString
+    let querySelector = {selector:{bloodType:blood_type1}};
+    return await this.queryWithQueryString(ctx,querySelector);
     }
 
 }
