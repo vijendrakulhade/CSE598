@@ -1,6 +1,6 @@
 {
     "index": {
-        "fields": ["bloodType"]
+        "fields": ["blood_type"]
     },
     "ddoc": "bloodTypeIndexDoc",
     "name": "bloodTypeIndex",
