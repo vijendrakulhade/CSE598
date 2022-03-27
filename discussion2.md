@@ -1,0 +1,6 @@
+Identity management is very important use case of blockchain technology. Digital identity can simplify a person's interaction at various places, be it a travel, bank or any field where identity needs to be verified. With the advent of distributed ledger technology, there are many public and private organizations working to digitize the identity. There are many solutions already available which is offerred by well known companies. Microsoft azure is offering decentralized digital identity solution using DLT [1]. IBM is also offering digital identity solutions for governments, business and educational institution[2]. Oodles blockchain is using hyper ledger fabric based Identity management [3]. All of these companies are maintaining its own permissioned block chain network to hold the digital indentity and its maintainence. The initial use cases are around active directory, where employees digital identity can stay in these distributed ledger and verification can happen through client app.
+
+Ref:
+1. https://www.microsoft.com/en-us/security/business/identity-access-management/decentralized-identity-blockchain
+2. https://www.ibm.com/blockchain/identity
+3. https://blockchain.oodles.io/blog/digital-identity-management-hyperledger/
