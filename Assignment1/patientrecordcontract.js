@@ -110,8 +110,10 @@ class PatientRecordContract extends Contract {
 
         let precord = await ctx.patientRecordList.getPRecord(precordKey);
         //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
-        precord.setLastCheckupDate(last_checkup_date);
+        let record = PatientRecord.fromBuffer(precord.toBuffer());
+        record.setLastCheckupDate(last_checkup_date);
         //Use updatePRecord from patientRecordList to update the record on the ledger
+        precord = PatientRecord.toBuffer(record);
         await ctx.patientRecordList.updatePRecord(precord);
 
        return JSON.stringify(precord);
@@ -177,8 +179,9 @@ class PatientRecordContract extends Contract {
         //  Construct the JSON couch DB selector queryString that uses genderIndex
         //  Pass the Query string built to queryWithQueryString
         let queryString  = {
-            selector:{ gender : gender} 
-        }
+            selector:{ gender : gender},
+            use_index:["_design/genderIndexDoc"] 
+        };
         let result = await this.queryWithQueryString(ctx,queryString); 
         return result;
     }
@@ -195,7 +198,10 @@ class PatientRecordContract extends Contract {
     //      to query by bloodType
     //      Construct the JSON couch DB selector queryString that uses blood_typeIndex
     //      Pass the Query string built to queryWithQueryString
-    let queryString = {selector: {bloodType:blood_type}};  
+    let queryString = {
+        selector: { bloodType:blood_type },
+        use_index:["_design/bloodTypeIndexDoc"] 
+    };  
     let res = await this.queryWithQueryString(ctx,queryString);
     return res;
     } 
