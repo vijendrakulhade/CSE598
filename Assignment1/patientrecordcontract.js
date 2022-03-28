@@ -51,7 +51,12 @@ class PatientRecordContract extends Contract {
     //  Read more about unknownTransaction here: https://hyperledger.github.io/fabric-chaincode-node/master/api/fabric-contract-api.Contract.html
     async unknownTransaction(ctx){
         // GRADED FUNCTION
-        throw new Error()
+        let func_and_params = ctx.stub.getFunctionAndParameters()
+        if (func_and_params['fcn'] === null || func_and_params['fcn'] === "")
+            throw new Error("Function name missing");
+        let valid_fun_list = ["createPatientRecord","getPatientByKey","updateCheckupDate","queryByGender","queryByBlood_Type","queryByBlood_Type_Dual"]
+        if (valid_fun_list.indexOf(func_and_params['fcn'])==-1)
+            throw new Error("Function name missing");
     }
 
      async afterTransaction(ctx){
@@ -90,10 +95,14 @@ class PatientRecordContract extends Contract {
     async getPatientByKey(ctx, username, name){
         let precordKey = PatientRecord.makeKey([username,name]);
         //TASK-1: Use a method from patientRecordList to read a record by key
-        console.log('create precordKey', precordKey);
-        console.log('ctx',ctx);
-        let precord = await ctx.patientRecordList.getPRecord(precordKey);
-        return PatientRecord
+        try{
+            console.log('create precordKey', precordKey);
+            console.log('ctx',ctx);
+            let precord = await ctx.patientRecordList.getPRecord(precordKey);
+        return precord.toBuffer();
+        }catch(e){
+            throw new Error(`Unexpected Error for ${precordKey}`,e);
+        }
     }
 
 
@@ -107,16 +116,18 @@ class PatientRecordContract extends Contract {
     async updateCheckupDate(ctx,username,name,last_checkup_date){
         let precordKey = PatientRecord.makeKey([username,name]);
         //TASK-3: Use a method from patientRecordList to read a record by key
-
-        let precord = await ctx.patientRecordList.getPRecord(precordKey);
-        //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
-        let record = PatientRecord.fromBuffer(precord.toBuffer());
-        record.setLastCheckupDate(last_checkup_date);
-        //Use updatePRecord from patientRecordList to update the record on the ledger
-        precord = PatientRecord.toBuffer(record);
-        await ctx.patientRecordList.updatePRecord(precord);
-
-       return JSON.stringify(precord);
+        try{
+            let precord = await ctx.patientRecordList.getPRecord(precordKey);
+            //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
+            let record = PatientRecord.fromBuffer(precord.toBuffer());
+            record.setLastCheckupDate(last_checkup_date);
+            //Use updatePRecord from patientRecordList to update the record on the ledger
+            precord = PatientRecord.toBuffer(record);
+            await ctx.patientRecordList.updatePRecord(precord);
+            return precord.toBuffer();
+        }catch(e){
+            throw new Error(`Unexpected Error for ${precordKey}`,e); 
+        }
     }
 
 
