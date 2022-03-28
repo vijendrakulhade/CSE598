@@ -101,7 +101,7 @@ class PatientRecordContract extends Contract {
             let precord = await ctx.patientRecordList.getPRecord(precordKey);
         return precord.toBuffer();
         }catch(e){
-            throw new Error(`Unexpected Error for ${precordKey}`,e);
+            throw new Error(`Unexpected Error for ${precordKey}`,e.message);
         }
     }
 
@@ -126,7 +126,7 @@ class PatientRecordContract extends Contract {
             await ctx.patientRecordList.updatePRecord(precord);
             return precord.toBuffer();
         }catch(e){
-            throw new Error(`Unexpected Error for ${precordKey}`,e); 
+            throw new Error(`Unexpected Error for ${precordKey}`,e.message); 
         }
     }
 
