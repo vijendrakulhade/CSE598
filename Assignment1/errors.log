@@ -1,3 +1,9 @@
 Writing block [2] (Raft index: 4) to ledger channel=cse598 node=1
 2022-03-28 19:34:40.184 UTC 0034 WARN [orderer.common.broadcast] Handle -> Error reading from 172.18.0.7:37022: rpc error: code = Canceled desc = context canceled
 2022-03-28 19:34:40.184 UTC 0035 INFO [comm.grpc.server] 1 -> streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Broadcast grpc.peer_address=172.18.0.7:37022 error="rpc error: code = Canceled desc = context canceled" grpc.code=Canceled grpc.call_duration=8.530089ms
+
+
+    2022-03-28T20:46:05.852Z error [shim:contracts-spi/chaincodefromcontract.js]      [cse598-21bdb8e5] Error: Unexpected Error for "Sur008":"Suresh"  
+    2022-03-28T20:46:05.854Z error [shim:lib/handler.js]                              [cse598-21bdb8e5] Calling chaincode Invoke() returned error response [Error: Unexpected Error for "Sur008":"Suresh"
+    at PatientRecordContract.getPatientByKey (/usr/local/src/patientrecordcontract.js:104:19)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)]. Sending ERROR message back to peer 
