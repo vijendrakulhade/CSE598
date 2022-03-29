@@ -7,3 +7,11 @@ Writing block [2] (Raft index: 4) to ledger channel=cse598 node=1
     2022-03-28T20:46:05.854Z error [shim:lib/handler.js]                              [cse598-21bdb8e5] Calling chaincode Invoke() returned error response [Error: Unexpected Error for "Sur008":"Suresh"
     at PatientRecordContract.getPatientByKey (/usr/local/src/patientrecordcontract.js:104:19)
     at processTicksAndRejections (internal/process/task_queues.js:97:5)]. Sending ERROR message back to peer 
+
+
+
+2022-03-29 04:11:22.968 UTC [gossip.comm] sendToEndpoint -> WARN 90b Failed obtaining connection for 172.19.0.8:7051, PKIid:6727b129cdd0c229804cdf084e8c052d13eb8b971d85dcb0e5e032c3171454ec reason: context deadline exceeded
+2022-03-29 04:11:23.371 UTC [core.comm] ServerHandshake -> ERRO 90c TLS handshake failed with error remote error: tls: bad certificate server=PeerServer remoteaddress=172.19.0.8:60568
+2022-03-29 04:11:23.959 UTC [core.comm] ServerHandshake -> ERRO 90d TLS handshake failed with error remote error: tls: bad certificate server=PeerServer remoteaddress=172.19.0.8:60572
+2022-03-29 04:11:24.961 UTC [core.comm] ServerHandshake -> ERRO 90e TLS handshake failed with error remote error: tls: bad certificate server=PeerServer remoteaddress=172.19.0.8:60578
+2022-03-29 04:11:24.963 UTC [gossip.comm] sendToEndpoint -> WARN 90f Failed obtaining connection for 172.19.0.8:7051, PKIid:6727b129cdd0c229804cdf084e8c052d13eb8b971d85dcb0e5e032c3171454ec reason: context deadline exceeded
