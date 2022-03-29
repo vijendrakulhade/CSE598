@@ -113,18 +113,16 @@ class PatientRecordContract extends Contract {
      * @param {String} name name
      * @param {String} lastCheckupDate date string 
      */
-<<<<<<< HEAD
-    async updateCheckupDate(ctx,username,name,last_checkup_date){
-=======
-    /*async updateCheckupDate(ctx,username,name,lastCheckupDate){
->>>>>>> 92cccdd1d715a1a37e3b6ea260ff07a72e03a477
+
+
+    async updateCheckupDate(ctx,username,name,lastCheckupDate){
         let precordKey = PatientRecord.makeKey([username,name]);
         //TASK-3: Use a method from patientRecordList to read a record by key
         try{
             let precord = await ctx.patientRecordList.getPRecord(precordKey);
             //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
             let record = PatientRecord.fromBuffer(precord.toBuffer());
-            record.setLastCheckupDate(last_checkup_date);
+            record.setLastCheckupDate(lastCheckupDate);
             //Use updatePRecord from patientRecordList to update the record on the ledger
             precord = PatientRecord.toBuffer(record);
             await ctx.patientRecordList.updatePRecord(precord);
