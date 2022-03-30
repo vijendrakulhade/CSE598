@@ -121,12 +121,10 @@ class PatientRecordContract extends Contract {
         try{
             let precord = await ctx.patientRecordList.getPRecord(precordKey);
             //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
-            let record = PatientRecord.fromBuffer(precord.toBuffer());
-            record.setLastCheckupDate(lastCheckupDate);
+            precord.setLastCheckupDate(lastCheckupDate);
             //Use updatePRecord from patientRecordList to update the record on the ledger
-            precord = PatientRecord.toBuffer(record);
             await ctx.patientRecordList.updatePRecord(precord);
-            return precord.toBuffer();
+            return precord;
         }catch(e){
             throw new Error(`Unexpected Error for ${precordKey}`,e.message); 
         }
@@ -231,7 +229,7 @@ class PatientRecordContract extends Contract {
     //      and uses the index created for bloodType
     //      Construct the JSON couch DB selector queryString that uses two blood type indexe
     //      Pass the Query string built to queryWithQueryString
-    let querySelector = {selector:{blood_type:[blood_type1,blood_type2]},
+    let querySelector = {selector: { "$all": [ {blood_type: blood_type1}, {blood_type: blood_type2}]},
     use_index:["_design/bloodTypeIndexDoc"] };
     return await this.queryWithQueryString(ctx, JSON.stringify(querySelector));
     }
