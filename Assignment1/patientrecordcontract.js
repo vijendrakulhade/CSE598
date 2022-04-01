@@ -99,7 +99,7 @@ class PatientRecordContract extends Contract {
             console.log('create precordKey', precordKey);
             console.log('ctx',ctx);
             let precord = await ctx.patientRecordList.getPRecord(precordKey);
-        return precord.toBuffer();
+        return precord;
         }catch(e){
             throw new Error(`Unexpected Error for ${precordKey}`,e.message);
         }
@@ -229,12 +229,11 @@ class PatientRecordContract extends Contract {
     //      and uses the index created for bloodType
     //      Construct the JSON couch DB selector queryString that uses two blood type indexe
     //      Pass the Query string built to queryWithQueryString
-    let querySelector = {selector: { "$all": [ {blood_type: blood_type1}, {blood_type: blood_type2}]},
+    let querySelector = {selector: { blood_type: { "$in" : [blood_type1,blood_type2]}},
     use_index:["_design/bloodTypeIndexDoc"] };
     return await this.queryWithQueryString(ctx, JSON.stringify(querySelector));
     }
 
 }
-
 
 module.exports = PatientRecordContract;

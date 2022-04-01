@@ -22,14 +22,9 @@ class PatientRecord extends State {
     getbloodtype() { return this.blood_type }
     setbloodtype(newbloodtype) { return this.blood_type=newbloodtype }
 
-<<<<<<< HEAD
     //TASK 2 - Write a getter and a setter for a field called last_checkup_date
-    getLastCheckupDate(){ return this.last_checkup_date}
-    setLastCheckupDate(last_checkup_date){ return this.last_checkup_date=last_checkup_date}
-=======
-    //TASK 2 - Write a getter and a setter for a field called lastCheckupDate
-
->>>>>>> 92cccdd1d715a1a37e3b6ea260ff07a72e03a477
+    getLastCheckupDate(){ return this.lastCheckupDate}
+    setLastCheckupDate(last_checkup_date){ return this.lastCheckupDate=last_checkup_date}
     //Helper functions
 
     static fromBuffer(buffer) {
